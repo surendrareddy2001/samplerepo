@@ -1,0 +1,61 @@
+# Function to add days to a date in "day/month/year" format
+def add_days_to_date(date_str, days_to_add):
+    # Split the date string to extract day, month, and year
+    day, month, year = map(int, date_str.split('/'))
+
+    # Define a list of days in each month
+    days_in_month = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+    # Check for leap year (for February)
+    if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
+        days_in_month[2] = 29
+
+    # Add days to the date
+    day += days_to_add
+
+    # Handle day overflow for the current month
+    while day > days_in_month[month]:
+        day -= days_in_month[month]
+        month += 1
+
+        # Handle month overflow
+        if month > 12:
+            month = 1
+            year += 1
+
+    return f"{day:02d}/{month:02d}/{year}"
+
+
+def date_cal():
+    k=input().split(" ")
+    
+    date_str1 = k[2]
+    date_str2 = k[3]
+    
+    # Split the date strings to extract day, month, and year
+    day1, month1, year1 = map(int, date_str1.split('/'))
+    day2, month2, year2 = map(int, date_str2.split('/'))
+    
+    # Calculate the difference in days
+    def date_difference(day1, month1, year1, day2, month2, year2):
+        # Convert both dates to days from a common reference date
+        date1 = day1 + 31 * (month1 + 12 * year1)
+        date2 = day2 + 31 * (month2 + 12 * year2)
+    
+        difference = abs(date2 - date1)
+    
+        return difference
+    
+    day_difference = date_difference(day1, month1, year1, day2, month2, year2)
+    fine=0
+    if day_difference>14:
+        fine = day_difference-14
+    
+    print(f"{k[0]} {k[1]} {add_days_to_date(date_str1,15)} ${fine}")
+
+
+n=int(input())
+for i in range(2):
+    date_cal()
+
+
